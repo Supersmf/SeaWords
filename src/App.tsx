@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import level1 from "../public/levels/1.json";
-import level2 from "../public/levels/2.json";
-import level3 from "../public/levels/3.json";
+import level1 from "./assets/levels/1.json";
+import level2 from "./assets/levels/2.json";
+import level3 from "./assets/levels/3.json";
 import { getLevel, getWordsLetters } from "./utils";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import GameScreens from "./pages/GameScreens";
