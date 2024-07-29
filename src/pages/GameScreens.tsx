@@ -24,8 +24,11 @@ const GameScreens: FC<GameScreensType> = ({
       <div className="text-center">Уровень {level}</div>
       <WordsCard words={words} selectedWords={selectedWords} />
       <div className="flex gap-x-[6px] py-2 justify-center">
-        {selectedLetters.map((letter) => (
-          <div className="h-full aspect-square bg-gray-100 rounded-[10px] text-black-100 text-3xl flex justify-center items-center select-none">
+        {selectedLetters.map((letter, index) => (
+          <div
+            key={letter + index}
+            className="h-full aspect-square bg-gray-100 rounded-[10px] text-black-100 text-3xl flex justify-center items-center select-none"
+          >
             {letter}
           </div>
         ))}

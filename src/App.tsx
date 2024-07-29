@@ -46,7 +46,7 @@ const App = () => {
   useNewTabCheck(() => setIsOpenInOtherTab(true));
 
   return (
-    <div className="h-screen w-screen bg-bodyPattern bg-repeat bg-contain flex justify-center ">
+    <div className="h-full w-screen bg-bodyPattern bg-repeat bg-contain flex justify-center ">
       <div className="w-[640px] h-full bg-blue-100">
         {levelWords.length === selectedWords.length ? (
           <VictoryScreen level={level} onLevelChange={handleNextLevel} />
