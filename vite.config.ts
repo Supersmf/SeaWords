@@ -11,4 +11,10 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
+  server: {
+    port: 4200,
+    host: '0.0.0.0',
+    hmr: true,
+    open: true,
+  },
 })

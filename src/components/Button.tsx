@@ -10,7 +10,7 @@ type ButtonType = {
 const Button: FC<ButtonType> = ({ label, onClick, className }) => (
   <div
     className={twMerge(
-      "h-[90px] w-[330px] relative text-white text-[42px]",
+      "w-60 h-16 lg:w-[330px] lg:h-[90px] relative text-white text-3xl lg:text-[42px]",
       className
     )}
   >

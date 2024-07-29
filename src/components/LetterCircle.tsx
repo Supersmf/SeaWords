@@ -158,7 +158,6 @@ const LetterCircle: FC<LetterCircleType> = ({
     <svg
       ref={svgRef}
       width="100%"
-      height="100%"
       viewBox={`0 0 ${2 * (radius + 40)} ${2 * (radius + 40)}`}
       preserveAspectRatio="xMidYMid meet"
       onMouseMove={handleMouseMove}
@@ -166,7 +165,7 @@ const LetterCircle: FC<LetterCircleType> = ({
       onMouseUp={handleMouseUp}
       onTouchEnd={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      className={className}
+      className={twMerge("phone:h-full", className)}
     >
       <circle
         cx={circleCenter.x}
@@ -188,7 +187,7 @@ const LetterCircle: FC<LetterCircleType> = ({
           <circle
             cx={x}
             cy={y + 5}
-            r="40"
+            r={radius / 3.75}
             className={twMerge(
               "fill-gray-200 shadow-circle",
               selectedLettersIds.includes(id) && "fill-red-200"
@@ -197,7 +196,7 @@ const LetterCircle: FC<LetterCircleType> = ({
           <circle
             cx={x}
             cy={y}
-            r="40"
+            r={radius / 3.75}
             className={twMerge(
               "fill-white shadow-circle",
               selectedLettersIds.includes(id) && "fill-red-100"
@@ -208,7 +207,7 @@ const LetterCircle: FC<LetterCircleType> = ({
             y={y}
             textAnchor="middle"
             dy=".3em"
-            className="text-[57px] select-none"
+            className="text-3xl phone:text-[57px] select-none"
           >
             {label}
           </text>

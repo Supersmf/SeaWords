@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import { screens } from "tailwindcss/defaultTheme";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -31,6 +34,12 @@ export default {
       },
       boxShadow: {
         circle: "0px 4px 20px 0px #2F3C5526",
+      },
+      screens: {
+        ...screens,
+        phone: "400px",
+        sm: "600px",
+        'h-sm': { raw: '(min-height: 800px)' },
       },
     },
   },

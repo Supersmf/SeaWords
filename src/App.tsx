@@ -64,12 +64,12 @@ const App = () => {
       </div>
       {isOpenInOtherTab && (
         <Popup>
-          <div className="bg-white w-[530px] h-[428px] rounded-[42px] relative px-6 pt-[118px] flex flex-col items-center">
-            <PopupRibbon className="absolute -top-5 left-1/2 -translate-x-1/2" />
-            <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-[40px] text-white text-center leading-[37px]">
+          <div className="bg-white w-5/6 max-w-[530px] sm:h-[428px] rounded-[42px] relative px-6 pt-20 sm:pt-[118px] flex flex-col items-center justify-between pb-10">
+            <PopupRibbon className="w-[250px] absolute -top-8 sm:w-auto sm:-top-5 left-1/2 -translate-x-1/2" />
+            <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-2xl leading-6 sm:text-[40px] text-white text-center sm:leading-[37px]">
               Две вкладки с игрой?
             </div>
-            <div className="text-[32px] leading-[38px] text-center text-black-100">
+            <div className="text-2xl sm:text-[32px] leading-8 sm:leading-[38px] text-center text-black-100">
               Похоже, игра открыта в нескольких вкладках браузера. Чтобы
               продолжить играть в этой вкладке, обновите страницу.
             </div>
