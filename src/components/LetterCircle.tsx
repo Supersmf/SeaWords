@@ -4,10 +4,12 @@ import {
   useState,
   useEffect,
   MouseEvent,
+  TouchEvent,
   useMemo,
   useCallback,
   Dispatch,
   SetStateAction,
+  Touch,
 } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -82,7 +84,10 @@ const LetterCircle: FC<LetterCircleType> = ({
     setIsDrawing(true);
   };
 
-  const handleMouseMove = ({ clientX, clientY }: MouseEvent<SVGSVGElement>) => {
+  const handleMouseMove = ({
+    clientX,
+    clientY,
+  }: MouseEvent<SVGSVGElement> | Touch) => {
     if (isDrawing && svgRef.current) {
       const svg = svgRef.current;
       const point = svg.createSVGPoint();
@@ -90,12 +95,24 @@ const LetterCircle: FC<LetterCircleType> = ({
       point.x = clientX;
       point.y = clientY;
 
-      const transformedPoint = point.matrixTransform(
-        svg.getScreenCTM()?.inverse()
-      );
+      const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
 
-      setMouseCoordinate({ x: transformedPoint.x, y: transformedPoint.y });
+      setMouseCoordinate({ x, y });
+
+      Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
+        const distance = Math.sqrt(
+          Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
+        );
+
+        if (distance < 40) {
+          handleCircleMouseOver(id);
+        }
+      });
     }
+  };
+
+  const handleTouchMove = ({ touches }: TouchEvent<SVGSVGElement>) => {
+    handleMouseMove(touches[0]);
   };
 
   const handleMouseUp = () => {
@@ -145,7 +162,9 @@ const LetterCircle: FC<LetterCircleType> = ({
       viewBox={`0 0 ${2 * (radius + 40)} ${2 * (radius + 40)}`}
       preserveAspectRatio="xMidYMid meet"
       onMouseMove={handleMouseMove}
+      onTouchMove={handleTouchMove}
       onMouseUp={handleMouseUp}
+      onTouchEnd={handleMouseUp}
       onMouseLeave={handleMouseUp}
       className={className}
     >
@@ -162,6 +181,7 @@ const LetterCircle: FC<LetterCircleType> = ({
         <g
           key={id}
           onMouseDown={() => handleMouseDown(id)}
+          onTouchStart={() => handleMouseDown(id)}
           onMouseOver={() => handleCircleMouseOver(id)}
           className="cursor-pointer"
         >

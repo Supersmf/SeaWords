@@ -18,24 +18,25 @@ const GameScreens: FC<GameScreensType> = ({
   selectedLetters,
   onLetterChange,
   onCheckData,
-}) => (
-  <div className="text-white flex flex-col items-center py-6 px-14 text-3xl h-full bg-blue-100">
-    <div className="mb-8">Level {level}</div>
-    <WordsCard words={words} selectedWords={selectedWords} />
-    <div className="flex gap-x-[6px] min-h-11 m-4">
-      {selectedLetters.map((letter) => (
-        <div className="w-[42px] aspect-square bg-gray-100 rounded-[10px] text-black-100 text-3xl flex justify-center items-center select-none">
-          {letter}
-        </div>
-      ))}
+}) => {
+  return (
+    <div className="text-white py-6 px-14 text-3xl h-full bg-blue-100 grid grid-rows-[50px_minmax(200px,_1fr)_50px_300px]">
+      <div className="text-center">Уровень {level}</div>
+      <WordsCard words={words} selectedWords={selectedWords} />
+      <div className="flex gap-x-[6px] py-2 justify-center">
+        {selectedLetters.map((letter) => (
+          <div className="h-full aspect-square bg-gray-100 rounded-[10px] text-black-100 text-3xl flex justify-center items-center select-none">
+            {letter}
+          </div>
+        ))}
+      </div>
+      <LetterCircle
+        letters={letters}
+        onLetterChange={onLetterChange}
+        onCheckData={onCheckData}
+      />
     </div>
-    <LetterCircle
-      letters={letters}
-      onLetterChange={onLetterChange}
-      onCheckData={onCheckData}
-      className="px-[15%]"
-    />
-  </div>
-);
+  );
+};
 
 export default GameScreens;
