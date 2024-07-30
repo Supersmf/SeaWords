@@ -24,4 +24,6 @@ html, body, #root {
 body {
   overscroll-behavior: none;
   min-width: 350px;
+  min-height: 600px;
+  overflow: hidden;
 }

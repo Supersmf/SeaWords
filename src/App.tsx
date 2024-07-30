@@ -1,15 +1,17 @@
 import { useMemo, useState } from "react";
-import level1 from "./assets/levels/1.json";
-import level2 from "./assets/levels/2.json";
-import level3 from "./assets/levels/3.json";
+
 import { getLevel, getWordsLetters } from "./utils";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import GameScreens from "./pages/GameScreens";
 import VictoryScreen from "./pages/VictoryScreen";
 import { useNewTabCheck } from "./hooks/useNewTabCheck";
 import Popup from "./components/Popup";
 import PopupRibbon from "./components/Icons/PopupRibbon";
 import Button from "./components/Button";
+import { useLocalStorage } from "@uidotdev/usehooks";
+
+import level1 from "./assets/levels/1.json";
+import level2 from "./assets/levels/2.json";
+import level3 from "./assets/levels/3.json";
 
 const levels = [
   level1.words.sort((a, b) => a.length - b.length), //move sort to utils
@@ -25,9 +27,12 @@ const App = () => {
   );
   const [level, setLevel] = useLocalStorage("level", 1);
 
-  const levelWords = useMemo(() => getLevel(levels, level), [level]);
+  const { levelWords, letters } = useMemo(() => {
+    const levelWords = getLevel(levels, level);
+    const letters = getWordsLetters(levelWords);
 
-  const letters = useMemo(() => getWordsLetters(levelWords), [levelWords]);
+    return { levelWords, letters };
+  }, [level]);
 
   const handleDataCheck = () => {
     const word = selectedLetters.join("");
