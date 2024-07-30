@@ -38,7 +38,7 @@ const LetterCircle: FC<LetterCircleType> = ({
     const handleResize = () => {
       if (svgRef.current) {
         const { clientWidth, clientHeight } = svgRef.current;
-        setRadius(Math.min(clientWidth, clientHeight) / 2 - 40);
+        setRadius(Math.min(clientWidth, clientHeight) / 2);
       }
     };
 
@@ -165,7 +165,7 @@ const LetterCircle: FC<LetterCircleType> = ({
       onMouseUp={handleMouseUp}
       onTouchEnd={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      className={twMerge("phone:h-full", className)}
+      className={className}
     >
       <circle
         cx={circleCenter.x}
@@ -207,7 +207,7 @@ const LetterCircle: FC<LetterCircleType> = ({
             y={y}
             textAnchor="middle"
             dy=".3em"
-            className="text-3xl phone:text-[57px] select-none"
+            className="text-3xl phone:text-[42px] sl:text-[57px] select-none"
           >
             {label}
           </text>

@@ -17,7 +17,7 @@ const Button: FC<ButtonType> = ({ label, onClick, className }) => (
     <div className="bg-green-200 h-full w-full absolute top-2 rounded-full"></div>
     <button
       onClick={onClick}
-      className=" h-full w-full rounded-full relative translate-y-[10px] content bottom-2 bg-green-100"
+      className=" h-full w-full rounded-full relative translate-y-[10px] content bottom-2 bg-green-100 hover:opacity-80 cursor-pointer"
     >
       {label}
     </button>
