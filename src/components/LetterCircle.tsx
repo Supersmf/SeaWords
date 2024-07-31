@@ -158,14 +158,19 @@ const LetterCircle: FC<LetterCircleType> = ({
     <svg
       ref={svgRef}
       width="100%"
-      viewBox={`0 0 ${2 * (radius + 40)} ${2 * (radius + 40)}`}
+      height="75%"
+      viewBox={`0 -5 ${2 * (radius + 40)} ${2 * (radius + 40)}`}
       preserveAspectRatio="xMidYMid meet"
-      onMouseMove={handleMouseMove}
-      onTouchMove={handleTouchMove}
-      onMouseUp={handleMouseUp}
-      onTouchEnd={handleMouseUp}
-      onMouseLeave={handleMouseUp}
       className={className}
+      {...(isDrawing
+        ? {
+            onMouseMove: handleMouseMove,
+            onTouchMove: handleTouchMove,
+            onMouseUp: handleMouseUp,
+            onTouchEnd: handleMouseUp,
+            onMouseLeave: handleMouseUp,
+          }
+        : {})}
     >
       <circle
         cx={circleCenter.x}

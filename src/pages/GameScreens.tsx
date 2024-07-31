@@ -26,9 +26,10 @@ const GameScreens: FC<GameScreensType> = ({
 }) => (
   <div
     className={twMerge(
-      "text-white pt-6 px-10 sl:text-3xl h-full bg-blue-100 grid grid-rows-[60px_minmax(20%,30%)_50%] gap-y-4 phone:grid-rows-[60px_minmax(20%,40%)_45%] sl:grid-rows-[60px_minmax(20%,50%)_50%]",
+      `text-white pt-6 px-10 sl:text-3xl h-full bg-blue-100 grid grid-rows-[60px_minmax(20%,30%)_50%] gap-y-4 
+        phone:grid-rows-[60px_minmax(20%,40%)_45%] sl:grid-rows-[60px_minmax(20%,50%)_50%]`,
       isLandscape &&
-        "py-1 grid-rows-[50px,80%] sl:grid-rows-[50px,80%] grid-cols-4 gap-0 h-[80vh]"
+        `py-1 grid-rows-[50px,80%] sl:grid-rows-[50px,80%] grid-cols-4 gap-0 h-[80vh]`
     )}
   >
     <div
@@ -65,7 +66,7 @@ const GameScreens: FC<GameScreensType> = ({
         letters={letters}
         onLetterChange={onLetterChange}
         onCheckData={onCheckData}
-        className="h-3/4"
+        // className="h-3/4"
       />
     </div>
   </div>
