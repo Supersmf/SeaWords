@@ -36,9 +36,8 @@ const App = () => {
     return { levelWords, letters };
   }, [level]);
 
-  const [selectedLetters, setSelectedLettersIds] = useState<string[]>([
-    ...letters,
-  ]);
+  const [selectedLetters, setSelectedLettersIds] = useState<string[]>([]);
+
   const handleDataCheck = () => {
     const word = selectedLetters.join("");
 
