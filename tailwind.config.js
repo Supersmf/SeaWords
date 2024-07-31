@@ -40,7 +40,6 @@ export default {
         phone: "400px",
         sm: "600px",
         sl: "600px",
-        'h-sm': { raw: '(min-height: 800px)' },
       },
     },
   },

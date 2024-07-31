@@ -3,6 +3,34 @@ import { twMerge } from "tailwind-merge";
 import { isMobile } from "react-device-detect";
 import { useOrientation } from "../hooks/useOrientation";
 
+type WordLettersType = {
+  word: string[];
+  isActive?: boolean;
+  className?: string;
+};
+
+export const WordLetters: FC<WordLettersType> = ({
+  word,
+  isActive,
+  className,
+}) => (
+  <>
+    {word.map((letter, index) => (
+      <div
+        key={letter + index}
+        className={twMerge(
+          "h-full aspect-square bg-gray-100 rounded-[20%] flex justify-center",
+          isActive && "bg-green-100 text-white",
+          !isMobile && "items-center",
+          className
+        )}
+      >
+        {isActive && letter}
+      </div>
+    ))}
+  </>
+);
+
 type WordsCardType = {
   words: string[];
   selectedWords: string[];
@@ -15,7 +43,7 @@ const WordsCard: FC<WordsCardType> = ({ words, selectedWords, className }) => {
   return (
     <div
       className={twMerge(
-        "grid gap-1 phone:gap-2 items-center grid-cols-2",
+        "grid gap-1 phone:gap-1 items-center grid-cols-2",
         isLandscape && "phone:gap-1",
         className
       )}
@@ -29,24 +57,13 @@ const WordsCard: FC<WordsCardType> = ({ words, selectedWords, className }) => {
             id={word}
             className={twMerge(
               "flex gap-1 phone:gap-2 justify-center text-[3cqh] sl:text-[42px] text-transparent select-none col-span-2 h-[4cqh] phone:h-[5cqh] sl:h-[6cqh]",
-              words.length > 6 && "col-span-1 phone:gap-2",
+              words.length > 6 && "col-span-1 phone:gap-2 sl:h-[5cqh]",
               index > 5 && "col-span-2",
-              isLandscape && "h-[8cqh] text-[5cqh] sl:text-[6cqh]"
+              isLandscape &&
+                "h-[8cqh] text-[5cqh] sl:h-[8cqh] sl:text-[8cqh] sl:leading-4"
             )}
           >
-            {word.split("").map((letter, index) => (
-              <div
-                key={letter + index}
-                className={twMerge(
-                  "h-full aspect-square bg-gray-100 rounded-[20%] flex justify-center leading-3 phone:leading-6",
-                  isSelected && "bg-green-100 text-white",
-                  !isMobile && "items-center",
-                  isLandscape && ""
-                )}
-              >
-                {isSelected && letter}
-              </div>
-            ))}
+            <WordLetters word={word.split("")} isActive={isSelected} />
           </div>
         );
       })}

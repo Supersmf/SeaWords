@@ -1,6 +1,7 @@
 import { FC } from "react";
-import Button from "../components/Button";
 import { twMerge } from "tailwind-merge";
+
+import Button from "../components/Button";
 
 type VictoryScreenType = {
   level: number;

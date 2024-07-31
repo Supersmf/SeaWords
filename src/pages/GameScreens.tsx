@@ -1,8 +1,8 @@
 import { FC } from "react";
+import { twMerge } from "tailwind-merge";
 
 import LetterCircle, { LetterCircleType } from "../components/LetterCircle";
-import WordsCard from "../components/WordsCard";
-import { twMerge } from "tailwind-merge";
+import WordsCard, { WordLetters } from "../components/WordsCard";
 
 type GameScreensType = LetterCircleType & {
   level: number;
@@ -10,6 +10,7 @@ type GameScreensType = LetterCircleType & {
   selectedWords: string[];
   selectedLetters: string[];
   isLandscape?: boolean;
+  isPortrait?: boolean;
 };
 
 const GameScreens: FC<GameScreensType> = ({
@@ -21,11 +22,13 @@ const GameScreens: FC<GameScreensType> = ({
   onLetterChange,
   onCheckData,
   isLandscape,
+  isPortrait,
 }) => (
   <div
     className={twMerge(
-      "text-white py-6 px-10 sl:text-3xl h-full bg-blue-100 grid grid-rows-[70px_minmax(20%,45%)_40%]",
-      isLandscape && "py-1 grid-rows-[50px,40%] grid-cols-4"
+      "text-white pt-6 px-10 sl:text-3xl h-full bg-blue-100 grid grid-rows-[60px_minmax(20%,30%)_50%] gap-y-4 phone:grid-rows-[60px_minmax(20%,40%)_45%] sl:grid-rows-[60px_minmax(20%,50%)_50%]",
+      isLandscape &&
+        "py-1 grid-rows-[50px,80%] sl:grid-rows-[50px,80%] grid-cols-4 gap-0 h-[80vh]"
     )}
   >
     <div
@@ -42,15 +45,21 @@ const GameScreens: FC<GameScreensType> = ({
       className={twMerge(isLandscape && "col-span-2")}
     />
     <div className={twMerge(isLandscape && "col-span-2")}>
-      <div className={twMerge("flex gap-x-[6px] my-4 justify-center h-10")}>
-        {selectedLetters.map((letter, index) => (
-          <div
-            key={letter + index}
-            className="h-full aspect-square bg-gray-100 rounded-[10px] text-black-100 text-3xl flex justify-center items-center select-none pb-2 h-sl:pb-0"
-          >
-            {letter}
-          </div>
-        ))}
+      <div
+        className={twMerge(
+          "flex gap-x-[6px] my-6 justify-center text-[3cqh] h-[4cqh] phone:text-[5cqh] phone:h-[6cqh]",
+          isLandscape && "mt-0"
+        )}
+      >
+        <WordLetters
+          word={selectedLetters}
+          isActive
+          className={twMerge(
+            "bg-white text-black-100 leading-3 phone:leading-8",
+            isLandscape && "h-[10cqh] text-[8cqh]",
+            isPortrait && "h-[5cqh] text-[4cqh] leading-6"
+          )}
+        />
       </div>
       <LetterCircle
         letters={letters}

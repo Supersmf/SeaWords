@@ -23,7 +23,6 @@ const levels = [
 
 const App = () => {
   const { isLandscape, isPortrait } = useOrientation();
-  const [selectedLetters, setSelectedLettersIds] = useState<string[]>([]);
   const [selectedWords, setSelectedWords] = useLocalStorage<string[]>(
     "selectedWords",
     []
@@ -37,6 +36,9 @@ const App = () => {
     return { levelWords, letters };
   }, [level]);
 
+  const [selectedLetters, setSelectedLettersIds] = useState<string[]>([
+    ...letters,
+  ]);
   const handleDataCheck = () => {
     const word = selectedLetters.join("");
 
@@ -77,6 +79,7 @@ const App = () => {
             onCheckData={handleDataCheck}
             onLetterChange={setSelectedLettersIds}
             isLandscape={isLandscape}
+            isPortrait={isPortrait}
           />
         )}
       </div>
