@@ -13,6 +13,8 @@ import {
 } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { debounce } from "../utils/debounce";
+
 type PointType = { x: number; y: number };
 
 export type LetterCircleType = {
@@ -84,32 +86,32 @@ const LetterCircle: FC<LetterCircleType> = ({
     setIsDrawing(true);
   };
 
-  const handleMouseMove = ({
-    clientX,
-    clientY,
-  }: MouseEvent<SVGSVGElement> | Touch) => {
-    if (isDrawing && svgRef.current) {
-      const svg = svgRef.current;
-      const point = svg.createSVGPoint();
+  const handleMouseMove = debounce(
+    ({ clientX, clientY }: MouseEvent<SVGSVGElement> | Touch = {} as Touch) => {
+      if (isDrawing && svgRef.current && clientX && clientY) {
+        const svg = svgRef.current;
+        const point = svg.createSVGPoint();
 
-      point.x = clientX;
-      point.y = clientY;
+        point.x = clientX;
+        point.y = clientY;
 
-      const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
+        const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
 
-      setMouseCoordinate({ x, y });
+        setMouseCoordinate({ x, y });
 
-      Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
-        const distance = Math.sqrt(
-          Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
-        );
+        Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
+          const distance = Math.sqrt(
+            Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
+          );
 
-        if (distance < 40) {
-          handleCircleMouseOver(id);
-        }
-      });
-    }
-  };
+          if (distance < 40) {
+            handleCircleMouseOver(id);
+          }
+        });
+      }
+    },
+    5
+  );
 
   const handleTouchMove = ({ touches }: TouchEvent<SVGSVGElement>) => {
     handleMouseMove(touches[0]);
@@ -118,7 +120,6 @@ const LetterCircle: FC<LetterCircleType> = ({
   const handleMouseUp = () => {
     setIsDrawing(false);
     setSelectedLettersIds([]);
-    onLetterChange([]);
     setMouseCoordinate(undefined);
     onCheckData();
   };

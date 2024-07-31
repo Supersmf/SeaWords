@@ -19,7 +19,7 @@ export const WordLetters: FC<WordLettersType> = ({
       <div
         key={letter + index}
         className={twMerge(
-          "h-full aspect-square bg-gray-100 rounded-[20%] flex justify-center",
+          "h-full aspect-square bg-gray-100 rounded-[20%] flex justify-center select-none",
           isActive && "bg-green-100 text-white",
           !isMobile && "items-center",
           className
@@ -54,7 +54,7 @@ const WordsCard: FC<WordsCardType> = ({ words, selectedWords, className }) => {
         return (
           <div
             key={word + index}
-            id={word}
+            id={"card-" + word}
             className={twMerge(
               "flex gap-1 phone:gap-2 justify-center text-[3cqh] sl:text-[42px] text-transparent select-none col-span-2 h-[4cqh] phone:h-[5cqh] sl:h-[6cqh]",
               words.length > 6 && "col-span-1 phone:gap-2 sl:h-[5cqh]",

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { getLevel, getWordsLetters } from "./utils";
@@ -14,6 +14,7 @@ import { useOrientation } from "./hooks/useOrientation";
 import level1 from "./assets/levels/1.json";
 import level2 from "./assets/levels/2.json";
 import level3 from "./assets/levels/3.json";
+import slideToAnimation from "./utils/slideToAnimation";
 
 const levels = [
   level1.words.sort((a, b) => a.length - b.length), //move sort to utils
@@ -23,6 +24,7 @@ const levels = [
 
 const App = () => {
   const { isLandscape, isPortrait } = useOrientation();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [selectedWords, setSelectedWords] = useLocalStorage<string[]>(
     "selectedWords",
     []
@@ -36,13 +38,33 @@ const App = () => {
     return { levelWords, letters };
   }, [level]);
 
-  const [selectedLetters, setSelectedLettersIds] = useState<string[]>([]);
+  const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
 
   const handleDataCheck = () => {
     const word = selectedLetters.join("");
 
     if (levelWords.includes(word) && !selectedWords.includes(word)) {
-      setSelectedWords([...selectedWords, word]);
+      const elementFrom =
+        containerRef.current?.querySelector<HTMLDivElement>(
+          "#selected-letters"
+        );
+      const elementTo = containerRef.current?.querySelector<HTMLDivElement>(
+        "#card-" + word
+      );
+
+      if (elementFrom && elementTo) {
+        setSelectedLetters([]);
+        slideToAnimation(elementFrom, elementTo, {
+          deepClone: true,
+          startDelay: 300,
+          onfinish: () => {
+            setSelectedWords([...selectedWords, word]);
+            setSelectedLetters([]);
+          },
+        });
+      }
+    } else {
+      setSelectedLetters([]);
     }
   };
 
@@ -57,6 +79,7 @@ const App = () => {
   return (
     <div className="h-full w-screen bg-bodyPattern bg-repeat bg-contain flex justify-center ">
       <div
+        ref={containerRef}
         className={twMerge(
           "w-[640px] h-full bg-blue-100",
           isPortrait && "w-full"
@@ -76,7 +99,7 @@ const App = () => {
             selectedLetters={selectedLetters}
             selectedWords={selectedWords}
             onCheckData={handleDataCheck}
-            onLetterChange={setSelectedLettersIds}
+            onLetterChange={setSelectedLetters}
             isLandscape={isLandscape}
             isPortrait={isPortrait}
           />

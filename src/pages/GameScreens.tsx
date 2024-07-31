@@ -47,6 +47,7 @@ const GameScreens: FC<GameScreensType> = ({
     />
     <div className={twMerge(isLandscape && "col-span-2")}>
       <div
+        id="selected-letters"
         className={twMerge(
           "flex gap-x-[6px] my-6 justify-center text-[3cqh] h-[4cqh] phone:text-[5cqh] phone:h-[6cqh]",
           isLandscape && "mt-0"
