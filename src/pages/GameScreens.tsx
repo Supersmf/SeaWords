@@ -47,27 +47,30 @@ const GameScreens: FC<GameScreensType> = ({
     />
     <div className={twMerge(isLandscape && "col-span-2")}>
       <div
-        id="selected-letters"
         className={twMerge(
-          "flex gap-x-[6px] my-6 justify-center text-[3cqh] h-[4cqh] phone:text-[5cqh] phone:h-[6cqh]",
+          "flex my-6 justify-center text-[3cqh] h-[4cqh] phone:text-[5cqh] phone:h-[6cqh]",
           isLandscape && "mt-0"
         )}
       >
-        <WordLetters
-          word={selectedLetters}
-          isActive
-          className={twMerge(
-            "bg-white text-black-100 leading-3 phone:leading-8",
-            isLandscape && "h-[10cqh] text-[8cqh]",
-            isPortrait && "h-[5cqh] text-[4cqh] leading-6"
-          )}
-        />
+        <div
+          id="selected-letters"
+          className="flex gap-x-[6px] text-[3cqh] h-[4cqh] phone:text-[5cqh] phone:h-[6cqh]"
+        >
+          <WordLetters
+            word={selectedLetters}
+            isActive
+            className={twMerge(
+              "bg-white text-black-100 leading-3 phone:leading-8",
+              isLandscape && "h-[10cqh] text-[8cqh]",
+              isPortrait && "h-[5cqh] text-[4cqh] leading-6"
+            )}
+          />
+        </div>
       </div>
       <LetterCircle
         letters={letters}
         onLetterChange={onLetterChange}
         onCheckData={onCheckData}
-        // className="h-3/4"
       />
     </div>
   </div>

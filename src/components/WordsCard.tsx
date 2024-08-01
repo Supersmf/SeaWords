@@ -54,16 +54,20 @@ const WordsCard: FC<WordsCardType> = ({ words, selectedWords, className }) => {
         return (
           <div
             key={word + index}
-            id={"card-" + word}
             className={twMerge(
-              "flex gap-1 phone:gap-2 justify-center text-[3cqh] sl:text-[42px] text-transparent select-none col-span-2 h-[4cqh] phone:h-[5cqh] sl:h-[6cqh]",
+              "flex justify-center text-[3cqh] sl:text-[42px] text-transparent select-none col-span-2 h-[4cqh] phone:h-[5cqh] sl:h-[6cqh]",
               words.length > 6 && "col-span-1 phone:gap-2 sl:h-[5cqh]",
               index > 5 && "col-span-2",
               isLandscape &&
                 "h-[8cqh] text-[5cqh] sl:h-[8cqh] sl:text-[8cqh] sl:leading-4"
             )}
           >
-            <WordLetters word={word.split("")} isActive={isSelected} />
+            <div
+              id={"card-" + word}
+              className="flex gap-1 phone:gap-2 justify-center"
+            >
+              <WordLetters word={word.split("")} isActive={isSelected} />
+            </div>
           </div>
         );
       })}

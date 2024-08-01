@@ -17,6 +17,8 @@ import { debounce } from "../utils/debounce";
 
 type PointType = { x: number; y: number };
 
+const CIRCLE_MARGIN = 60;
+
 export type LetterCircleType = {
   letters: string[];
   onLetterChange: Dispatch<SetStateAction<string[]>>;
@@ -51,7 +53,7 @@ const LetterCircle: FC<LetterCircleType> = ({
   }, []);
 
   const circleCenter = useMemo(
-    () => ({ x: radius + 40, y: radius + 40 }),
+    () => ({ x: radius + CIRCLE_MARGIN, y: radius + CIRCLE_MARGIN }),
     [radius]
   );
 
@@ -104,7 +106,7 @@ const LetterCircle: FC<LetterCircleType> = ({
             Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
           );
 
-          if (distance < 40) {
+          if (distance < CIRCLE_MARGIN) {
             handleCircleMouseOver(id);
           }
         });
@@ -160,7 +162,9 @@ const LetterCircle: FC<LetterCircleType> = ({
       ref={svgRef}
       width="100%"
       height="75%"
-      viewBox={`0 -5 ${2 * (radius + 40)} ${2 * (radius + 40)}`}
+      viewBox={`0 -5 ${2 * (radius + CIRCLE_MARGIN)} ${
+        2 * (radius + CIRCLE_MARGIN)
+      }`}
       preserveAspectRatio="xMidYMid meet"
       className={className}
       {...(isDrawing
