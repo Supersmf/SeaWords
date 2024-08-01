@@ -13,9 +13,11 @@ import {
 } from "react";
 import { twMerge } from "tailwind-merge";
 
+import { debounce } from "../utils/debounce";
+
 type PointType = { x: number; y: number };
 
-const CIRCLE_MARGIN = 60;
+const CIRCLE_MARGIN = 40;
 
 export type LetterCircleType = {
   letters: string[];
@@ -86,31 +88,32 @@ const LetterCircle: FC<LetterCircleType> = ({
     setIsDrawing(true);
   };
 
-  const handleMouseMove = (
-    { clientX, clientY }: MouseEvent<SVGSVGElement> | Touch = {} as Touch
-  ) => {
-    if (isDrawing && svgRef.current && clientX && clientY) {
-      const svg = svgRef.current;
-      const point = svg.createSVGPoint();
+  const handleMouseMove = debounce(
+    ({ clientX, clientY }: MouseEvent<SVGSVGElement> | Touch = {} as Touch) => {
+      if (isDrawing && svgRef.current && clientX && clientY) {
+        const svg = svgRef.current;
+        const point = svg.createSVGPoint();
 
-      point.x = clientX;
-      point.y = clientY;
+        point.x = clientX;
+        point.y = clientY;
 
-      const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
+        const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
 
-      setMouseCoordinate({ x, y });
+        setMouseCoordinate({ x, y });
 
-      Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
-        const distance = Math.sqrt(
-          Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
-        );
+        Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
+          const distance = Math.sqrt(
+            Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
+          );
 
-        if (distance < CIRCLE_MARGIN) {
-          handleCircleMouseOver(id);
-        }
-      });
-    }
-  };
+          if (distance < CIRCLE_MARGIN) {
+            handleCircleMouseOver(id);
+          }
+        });
+      }
+    },
+    5
+  );
 
   const handleTouchMove = ({ touches }: TouchEvent<SVGSVGElement>) => {
     handleMouseMove(touches[0]);
@@ -159,9 +162,7 @@ const LetterCircle: FC<LetterCircleType> = ({
       ref={svgRef}
       width="100%"
       height="75%"
-      viewBox={`0 -5 ${2 * (radius + CIRCLE_MARGIN)} ${
-        2 * (radius + CIRCLE_MARGIN)
-      }`}
+      viewBox={`0 -5 ${2 * (radius + 60)} ${2 * (radius + 60)}`}
       preserveAspectRatio="xMidYMid meet"
       className={className}
       {...(isDrawing
