@@ -13,8 +13,6 @@ import {
 } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { debounce } from "../utils/debounce";
-
 type PointType = { x: number; y: number };
 
 const CIRCLE_MARGIN = 60;
@@ -88,32 +86,31 @@ const LetterCircle: FC<LetterCircleType> = ({
     setIsDrawing(true);
   };
 
-  const handleMouseMove = debounce(
-    ({ clientX, clientY }: MouseEvent<SVGSVGElement> | Touch = {} as Touch) => {
-      if (isDrawing && svgRef.current && clientX && clientY) {
-        const svg = svgRef.current;
-        const point = svg.createSVGPoint();
+  const handleMouseMove = (
+    { clientX, clientY }: MouseEvent<SVGSVGElement> | Touch = {} as Touch
+  ) => {
+    if (isDrawing && svgRef.current && clientX && clientY) {
+      const svg = svgRef.current;
+      const point = svg.createSVGPoint();
 
-        point.x = clientX;
-        point.y = clientY;
+      point.x = clientX;
+      point.y = clientY;
 
-        const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
+      const { x, y } = point.matrixTransform(svg.getScreenCTM()?.inverse());
 
-        setMouseCoordinate({ x, y });
+      setMouseCoordinate({ x, y });
 
-        Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
-          const distance = Math.sqrt(
-            Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
-          );
+      Object.entries(values).forEach(([id, { x: elementX, y: elementY }]) => {
+        const distance = Math.sqrt(
+          Math.pow(x - elementX, 2) + Math.pow(y - elementY, 2)
+        );
 
-          if (distance < CIRCLE_MARGIN) {
-            handleCircleMouseOver(id);
-          }
-        });
-      }
-    },
-    5
-  );
+        if (distance < CIRCLE_MARGIN) {
+          handleCircleMouseOver(id);
+        }
+      });
+    }
+  };
 
   const handleTouchMove = ({ touches }: TouchEvent<SVGSVGElement>) => {
     handleMouseMove(touches[0]);
