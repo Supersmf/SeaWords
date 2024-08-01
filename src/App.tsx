@@ -1,5 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { useLocalStorage, useToggle } from "@uidotdev/usehooks";
 
 import { getLevel, getWordsLetters } from "./utils";
 import GameScreens from "./pages/GameScreens";
@@ -8,13 +9,13 @@ import { useNewTabCheck } from "./hooks/useNewTabCheck";
 import Popup from "./components/Popup";
 import PopupRibbon from "./components/Icons/PopupRibbon";
 import Button from "./components/Button";
-import { useLocalStorage } from "@uidotdev/usehooks";
+import slideToAnimation from "./utils/slideToAnimation";
+import { LetterCircleType } from "./components/LetterCircle";
 
 import { useOrientation } from "./hooks/useOrientation";
 import level1 from "./assets/levels/1.json";
 import level2 from "./assets/levels/2.json";
 import level3 from "./assets/levels/3.json";
-import slideToAnimation from "./utils/slideToAnimation";
 
 const levels = [
   level1.words.sort((a, b) => a.length - b.length), //move sort to utils
@@ -30,6 +31,7 @@ const App = () => {
     []
   );
   const [level, setLevel] = useLocalStorage("level", 1);
+  const [isProcessing, setIsProcessing] = useToggle();
 
   const { levelWords, letters } = useMemo(() => {
     const levelWords = getLevel(levels, level);
@@ -40,7 +42,7 @@ const App = () => {
 
   const [selectedLetters, setSelectedLetters] = useState<string[]>([]);
 
-  const handleDataCheck = () => {
+  const handleDataCheck = useCallback(() => {
     const word = selectedLetters.join("");
 
     if (levelWords.includes(word) && !selectedWords.includes(word)) {
@@ -53,6 +55,7 @@ const App = () => {
       );
 
       if (elementFrom && elementTo) {
+        setIsProcessing();
         setSelectedLetters([]);
         slideToAnimation(elementFrom, elementTo, {
           deepClone: true,
@@ -60,21 +63,35 @@ const App = () => {
           onfinish: () => {
             setSelectedWords([...selectedWords, word]);
             setSelectedLetters([]);
+            setIsProcessing();
           },
         });
       }
     } else {
       setSelectedLetters([]);
     }
-  };
+  }, [
+    levelWords,
+    selectedLetters,
+    selectedWords,
+    setIsProcessing,
+    setSelectedWords,
+  ]);
 
   const handleNextLevel = () => {
     setSelectedWords([]);
     setLevel(level + 1);
   };
+
   const [isOpenInOtherTab, setIsOpenInOtherTab] = useState(false);
 
   useNewTabCheck(() => setIsOpenInOtherTab(true));
+
+  const handleLetterChange: LetterCircleType["onLetterChange"] = (letter) => {
+    if (!isProcessing) {
+      setSelectedLetters(letter);
+    }
+  };
 
   return (
     <div className="h-full w-screen bg-bodyPattern bg-repeat bg-contain flex justify-center ">
@@ -99,7 +116,7 @@ const App = () => {
             selectedLetters={selectedLetters}
             selectedWords={selectedWords}
             onCheckData={handleDataCheck}
-            onLetterChange={setSelectedLetters}
+            onLetterChange={handleLetterChange}
             isLandscape={isLandscape}
             isPortrait={isPortrait}
           />
